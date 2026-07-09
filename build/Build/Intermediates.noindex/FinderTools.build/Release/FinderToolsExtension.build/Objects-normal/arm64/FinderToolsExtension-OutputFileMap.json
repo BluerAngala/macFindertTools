@@ -1,0 +1,16 @@
+{
+  "" : {
+    "const-values" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderToolsExtension-primary.swiftconstvalues",
+    "dependencies" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderToolsExtension-primary.d",
+    "diagnostics" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderToolsExtension-primary.dia",
+    "emit-module-dependencies" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderToolsExtension-primary-emit-module.d",
+    "emit-module-diagnostics" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderToolsExtension-primary-emit-module.dia",
+    "pch" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderToolsExtension-primary-Bridging-header.pch",
+    "swift-dependencies" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderToolsExtension-primary.swiftdeps"
+  },
+  "/tmp/FinderTools/FinderToolsExtension/FinderSync.swift" : {
+    "index-unit-output-path" : "/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderSync.o",
+    "llvm-bc" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderSync.bc",
+    "object" : "/tmp/FinderTools/build/Build/Intermediates.noindex/FinderTools.build/Release/FinderToolsExtension.build/Objects-normal/arm64/FinderSync.o"
+  }
+}

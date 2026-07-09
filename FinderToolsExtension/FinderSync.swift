@@ -211,63 +211,29 @@ class FinderSync: FIFinderSync {
             return
         }
         
-        DispatchQueue.main.async {
-            // 创建并配置保存面板
-            let savePanel = NSSavePanel()
-            savePanel.nameFieldStringValue = "\(defaultFileName).\(fileExtension)"
-            savePanel.directoryURL = targetURL
-            savePanel.showsTagField = false
-            savePanel.canCreateDirectories = false
-            
-            // 使用 beginSheetModal(for:completionHandler:) 显示对话框
-            savePanel.beginSheetModal(for: self.sharedWindow) { response in
-                self.sharedWindow.orderOut(nil)
-                if response == .OK, let url = savePanel.url {
-                    // 根据文件类型写入内容
-                    switch fileExtension {
-                    case "txt":
-                        let text = ""
-                        do {
-                            try text.write(to: url, atomically: true, encoding: .utf8)
-                        } catch {
-                            self.showAlert(title: "错误", message: "保存 TXT 文件失败：\(error.localizedDescription)")
-                        }
-                    case "docx":
-                        let templatePath = Bundle.main.path(forResource: "Template", ofType: "docx")
-                        if let templatePath = templatePath {
-                            do {
-                                try FileManager.default.copyItem(atPath: templatePath, toPath: url.path)
-                            } catch {
-                                print("创建 DOCX 文件失败：\(error.localizedDescription)")
-                                self.showAlert(title: "错误", message: "保存 DOCX 文件失败：\(error.localizedDescription)")
-                            }
-                        }
-                    case "xlsx":
-                        let templatePath = Bundle.main.path(forResource: "Template", ofType: "xlsx")
-                        if let templatePath = templatePath {
-                            do {
-                                try FileManager.default.copyItem(atPath: templatePath, toPath: url.path)
-                            } catch {
-                                print("创建 XLSX 文件失败：\(error.localizedDescription)")
-                                self.showAlert(title: "错误", message: "保存 XLSX 文件失败：\(error.localizedDescription)")
-                            }
-                        }
-                        
-                    case "pptx":
-                        let templatePath = Bundle.main.path(forResource: "Template", ofType: "pptx")
-                        if let templatePath = templatePath {
-                            do {
-                                try FileManager.default.copyItem(atPath: templatePath, toPath: url.path)
-                            } catch {
-                                print("创建 PPTX 文件失败：\(error.localizedDescription)")
-                                self.showAlert(title: "错误", message: "保存 PPTX 文件失败：\(error.localizedDescription)")
-                            }
-                        }
-                    default:
-                        print("不支持的文件类型：\(fileExtension)")
-                    }
+        var destination = targetURL.appendingPathComponent("\(defaultFileName).\(fileExtension)")
+        // 去重：文件已存在则自动加编号
+        var counter = 1
+        while FileManager.default.fileExists(atPath: destination.path) {
+            destination = targetURL.appendingPathComponent("\(defaultFileName) \(counter).\(fileExtension)")
+            counter += 1
+        }
+        
+        do {
+            switch fileExtension {
+            case "txt":
+                try "".write(to: destination, atomically: true, encoding: .utf8)
+            default:
+                if let templatePath = Bundle.main.path(forResource: "Template", ofType: fileExtension) {
+                    try FileManager.default.copyItem(atPath: templatePath, toPath: destination.path)
+                } else {
+                    try Data().write(to: destination)
                 }
             }
+            NSLog("FinderTools: Created \(destination.lastPathComponent)")
+        } catch {
+            NSLog("FinderTools: Failed to create file: \(error.localizedDescription)")
+            showAlert(title: "创建失败", message: error.localizedDescription)
         }
     }
     
@@ -302,6 +268,7 @@ class FinderSync: FIFinderSync {
         
         NSLog("Copied paths: %@", paths)
     }
+
 }
 
 

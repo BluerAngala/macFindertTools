@@ -1,0 +1,56 @@
+{
+  "source": "/tmp/FinderTools/FinderTools/FinderToolsApp.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "插件已激活",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 60
+        }
+      },
+      {
+        "comment": "",
+        "key": "所有功能正常运行",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 65
+        }
+      },
+      {
+        "comment": "",
+        "key": "插件未激活",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 73
+        }
+      },
+      {
+        "comment": "",
+        "key": "需要激活插件才能使用完整功能",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 78
+        }
+      },
+      {
+        "comment": "",
+        "key": "激活插件",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 82
+        }
+      },
+      {
+        "comment": "",
+        "key": "窗口将在3秒后自动关闭",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 93
+        }
+      }
+    ]
+  },
+  "version": 1
+}
