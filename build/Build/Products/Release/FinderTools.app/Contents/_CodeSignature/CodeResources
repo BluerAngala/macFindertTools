@@ -3,7 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>files</key>
-	<dict/>
+	<dict>
+		<key>Resources/AppIcon.icns</key>
+		<data>
+		yDO3I63cN2Vu/+4WFKe6oO9p3Ec=
+		</data>
+	</dict>
 	<key>files2</key>
 	<dict>
 		<key>PlugIns/FinderToolsExtension.appex</key>
@@ -14,6 +19,13 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"492ef85069e1fed667ec8af18d180ffe56de0b51"</string>
+		</dict>
+		<key>Resources/AppIcon.icns</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			wpLnaA63vZTG4PbVo00FeE320RmgTWi+qx7HN5W+4K4=
+			</data>
 		</dict>
 	</dict>
 	<key>rules</key>

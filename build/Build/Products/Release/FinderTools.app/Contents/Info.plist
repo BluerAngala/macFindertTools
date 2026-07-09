@@ -8,6 +8,10 @@
 	<string>zh-Hans</string>
 	<key>CFBundleExecutable</key>
 	<string>FinderTools</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.lwz.FinderTools</string>
 	<key>CFBundleInfoDictionaryVersion</key>

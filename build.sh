@@ -2,30 +2,32 @@
 set -e
 cd "$(dirname "$0")"
 
-echo "==> Building..."
+APP_NAME="FinderTools"
+EXT_NAME="FinderToolsExtension"
+
+echo "==> Cleaning..."
 rm -rf build
-xcodebuild -project FinderTools.xcodeproj -scheme FinderTools \
+
+echo "==> Building..."
+xcodebuild -project "${APP_NAME}.xcodeproj" -scheme "$APP_NAME" \
   -configuration Release -derivedDataPath build \
   CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO \
-  2>&1 | grep -E "error:|BUILD|warning:" | head -20
+  2>&1 | grep -E "error:|BUILD|FAILED" || true
 
-APP="build/Build/Products/Release/FinderTools.app"
-EXT="$APP/Contents/PlugIns/FinderToolsExtension.appex"
+APP="build/Build/Products/Release/${APP_NAME}.app"
+EXT="$APP/Contents/PlugIns/${EXT_NAME}.appex"
 
 echo "==> Generating icon..."
-ICNS_DIR="/tmp/AppIcon.iconset"
+ICNS_DIR="/tmp/${APP_NAME}.iconset"
 rm -rf "$ICNS_DIR" && mkdir "$ICNS_DIR"
-SRC="FinderTools/Assets.xcassets/AppIcon.appiconset"
-cp "$SRC/16.png"     "$ICNS_DIR/icon_16x16.png"
-cp "$SRC/32.png"     "$ICNS_DIR/icon_16x16@2x.png"
-cp "$SRC/32 1.png"   "$ICNS_DIR/icon_32x32.png"
-cp "$SRC/64.png"     "$ICNS_DIR/icon_32x32@2x.png"
-cp "$SRC/128.png"    "$ICNS_DIR/icon_128x128.png"
-cp "$SRC/256 1.png"  "$ICNS_DIR/icon_128x128@2x.png"
-cp "$SRC/256.png"    "$ICNS_DIR/icon_256x256.png"
-cp "$SRC/512 1.png"  "$ICNS_DIR/icon_256x256@2x.png"
-cp "$SRC/512.png"    "$ICNS_DIR/icon_512x512.png"
-cp "$SRC/1024.png"   "$ICNS_DIR/icon_512x512@2x.png"
+SRC="${APP_NAME}/Assets.xcassets/AppIcon.appiconset"
+for pair in "16.png 16x16" "32.png 16x16@2x" "32 1.png 32x32" "64.png 32x32@2x" \
+            "128.png 128x128" "256 1.png 128x128@2x" "256.png 256x256" \
+            "512 1.png 256x256@2x" "512.png 512x512" "1024.png 512x512@2x"; do
+  src=$(echo "$pair" | cut -d' ' -f1)
+  dst=$(echo "$pair" | cut -d' ' -f2)
+  cp "$SRC/$src" "$ICNS_DIR/icon_$dst.png"
+done
 iconutil -c icns "$ICNS_DIR" -o "$APP/Contents/Resources/AppIcon.icns"
 rm -rf "$ICNS_DIR"
 
@@ -35,19 +37,23 @@ plutil -replace CFBundleIconName -string "AppIcon" "$APP/Contents/Info.plist"
 
 echo "==> Signing..."
 codesign --force --options runtime --sign - \
-  --entitlements FinderToolsExtension/FinderToolsExtension.entitlements "$EXT"
+  --entitlements "${EXT_NAME}/${EXT_NAME}.entitlements" "$EXT"
 codesign --force --options runtime --sign - \
-  --entitlements FinderTools/FinderTools.entitlements "$APP"
+  --entitlements "${APP_NAME}/${APP_NAME}.entitlements" "$APP"
 
 echo "==> Installing..."
-killall FinderTools 2>/dev/null; killall FinderToolsExtension 2>/dev/null; sleep 1
-rm -rf /Applications/FinderTools.app
-cp -R "$APP" /Applications/FinderTools.app
-xattr -cr /Applications/FinderTools.app
-chmod +x /Applications/FinderTools.app/Contents/MacOS/FinderTools
-chmod +x /Applications/FinderTools.app/Contents/PlugIns/FinderToolsExtension.appex/Contents/MacOS/FinderToolsExtension
+killall "$APP_NAME" 2>/dev/null || true
+killall "$EXT_NAME" 2>/dev/null || true
+sleep 1
+rm -rf "/Applications/${APP_NAME}.app"
+cp -R "$APP" "/Applications/${APP_NAME}.app"
+xattr -cr "/Applications/${APP_NAME}.app"
+chmod +x "/Applications/${APP_NAME}.app/Contents/MacOS/${APP_NAME}"
+chmod +x "/Applications/${APP_NAME}.app/Contents/PlugIns/${EXT_NAME}.appex/Contents/MacOS/${EXT_NAME}"
 
-pluginkit -e use -i com.lwz.FinderTools.FinderToolsExtension 2>/dev/null
-killall Finder 2>/dev/null; sleep 1
-open /Applications/FinderTools.app
+pluginkit -e use -i "com.lwz.${APP_NAME}.${EXT_NAME}" 2>/dev/null || true
+killall Finder 2>/dev/null || true
+sleep 1
+open "/Applications/${APP_NAME}.app"
+
 echo "==> Done!"
