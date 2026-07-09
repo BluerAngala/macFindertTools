@@ -1,4 +1,0 @@
-Target dependency graph (2 targets)
-Target 'FinderTools' in project 'FinderTools'
-➜ Explicit dependency on target 'FinderToolsExtension' in project 'FinderTools'
-Target 'FinderToolsExtension' in project 'FinderTools' (no dependencies)
